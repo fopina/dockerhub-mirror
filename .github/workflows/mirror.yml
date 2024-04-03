@@ -34,12 +34,18 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          visibility: public
           push: true
           context: base
           build-args: |
             IMAGE=alpine:3.19
+          # FIXME: always use same package as "visibility" is always set to private on new images
+          # and there is no REST API endpoint to do change it either.
+          # very annoying to go change it via UI every time a new image was mirrored...
+          # tags: |
+          #  ghcr.io/fopinappb/dockerhub-mirror/alpine-3.19
           tags: |
-            ghcr.io/fopinappb/dockerhub-mirror/alpine:3.19
+            ghcr.io/fopinappb/dockerhub-mirror:alpine-3.19
           platforms: linux/amd64,linux/arm64,linux/arm/v7
 
       - name: placeholder
