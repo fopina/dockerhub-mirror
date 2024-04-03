@@ -7,6 +7,10 @@ on:
         description: Full image name (tag included)
         required: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
