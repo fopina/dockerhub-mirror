@@ -36,7 +36,7 @@ jobs:
         run: |
           TAG=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f2)
           NAME=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f1 | rev | cut -d '/' -f 1 | rev)
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"\
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
       - name: Build and push
