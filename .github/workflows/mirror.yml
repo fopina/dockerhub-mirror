@@ -33,8 +33,8 @@ jobs:
           push: true
           # use "context" instead of "file", no more context is needed
           context: Dockerfile.base
-          build-args:
-            IMAGE: alpine:3.19
+          build-args: |
+            IMAGE=alpine:3.19
           tags: |
             ghcr.io/fopinappb/dockerhub-mirror/alpine:3.19
           platforms: linux/amd64,linux/arm64,linux/arm/v7
