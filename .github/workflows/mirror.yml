@@ -31,8 +31,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          # use "context" instead of "file", no more context is needed
-          context: Dockerfile.base
+          context: base
           build-args: |
             IMAGE=alpine:3.19
           tags: |
