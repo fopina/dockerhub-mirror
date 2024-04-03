@@ -57,5 +57,5 @@ jobs:
 
       - name: placeholder
         run: |
-            echo "### New Version" >> $GITHUB_STEP_SUMMARY
-            echo placeholder >> $GITHUB_STEP_SUMMARY
+            echo "### ${{ steps.prepare.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+            echo `${{ github.event.inputs.name }}` mirrored to `ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare.outputs.name }}-${{ steps.prepare.outputs.tag }}` >> $GITHUB_STEP_SUMMARY
