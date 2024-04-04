@@ -40,11 +40,10 @@ jobs:
             return script({context})
       
       - name: Encode remote name
-        uses: actions/github-script@v7
         id: prepare-remote
-        with:
-          script: |
-            console.log(context)
+        run: |
+          echo remote=$(echo ${{ fromJSON(steps.prepare.outputs.result).remote }} | tr '/' '-') >> $GITHUB_OUTPUT
+          echo tag=$(echo ${{ fromJSON(steps.prepare.outputs.result).tag }}) >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -59,10 +58,10 @@ jobs:
           # tags: |
           #  ghcr.io/fopinappb/dockerhub-mirror/alpine:3.19
           tags: |
-            ghcr.io/fopinappb/dockerhub-mirror:${{ fromJSON(steps.prepare.outputs.result).remote }}-${{ fromJSON(steps.prepare.outputs.result).tag }}
+            ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare-remote.outputs.remote }}-${{ steps.prepare-remote.outputs.tag }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
 
       - name: summary
         run: |
-            echo "### ${{ fromJSON(steps.prepare.outputs.result).remote }}" >> $GITHUB_STEP_SUMMARY
-            echo '`${{ github.event.inputs.name }}` mirrored to `ghcr.io/fopinappb/dockerhub-mirror:${{ fromJSON(steps.prepare.outputs.result).remote }}-${{ fromJSON(steps.prepare.outputs.result).tag }}`' >> $GITHUB_STEP_SUMMARY
+            echo "### ${{ steps.prepare-remote.outputs.remote }}" >> $GITHUB_STEP_SUMMARY
+            echo '`${{ github.event.inputs.name }}` mirrored to `ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare-remote.outputs.remote }}-${{ steps.prepare-remote.outputs.tag }}`' >> $GITHUB_STEP_SUMMARY
