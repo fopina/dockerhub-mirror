@@ -41,31 +41,31 @@ jobs:
       - name: Get result
         run: echo "${{ fromJSON(steps.set-result.outputs.result) }}"
 
-      - name: Prepare image name
-        id: prepare
-        run: |
-          TAG=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f2)
-          NAME=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f1 | rev | cut -d '/' -f 1 | rev)
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+      # - name: Prepare image name
+      #   id: prepare
+      #   run: |
+      #     TAG=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f2)
+      #     NAME=$(echo ${{ github.event.inputs.name }} | cut -d ':' -f1 | rev | cut -d '/' -f 1 | rev)
+      #     echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      #     echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          context: base
-          build-args: |
-            IMAGE=${{ github.event.inputs.name }}
-          # FIXME: always use same package as "visibility" is always set to private on new images
-          # and there is no REST API endpoint to do change it either.
-          # very annoying to go change it via UI every time a new image was mirrored...
-          # tags: |
-          #  ghcr.io/fopinappb/dockerhub-mirror/alpine-3.19
-          tags: |
-            ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare.outputs.name }}-${{ steps.prepare.outputs.tag }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     push: true
+      #     context: base
+      #     build-args: |
+      #       IMAGE=${{ github.event.inputs.name }}
+      #     # FIXME: always use same package as "visibility" is always set to private on new images
+      #     # and there is no REST API endpoint to do change it either.
+      #     # very annoying to go change it via UI every time a new image was mirrored...
+      #     # tags: |
+      #     #  ghcr.io/fopinappb/dockerhub-mirror/alpine-3.19
+      #     tags: |
+      #       ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare.outputs.name }}-${{ steps.prepare.outputs.tag }}
+      #     platforms: linux/amd64,linux/arm64,linux/arm/v7
 
-      - name: placeholder
-        run: |
-            echo "### ${{ steps.prepare.outputs.name }}" >> $GITHUB_STEP_SUMMARY
-            echo '`${{ github.event.inputs.name }}` mirrored to `ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare.outputs.name }}-${{ steps.prepare.outputs.tag }}`' >> $GITHUB_STEP_SUMMARY
+      # - name: placeholder
+      #   run: |
+      #       echo "### ${{ steps.prepare.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+      #       echo '`${{ github.event.inputs.name }}` mirrored to `ghcr.io/fopinappb/dockerhub-mirror:${{ steps.prepare.outputs.name }}-${{ steps.prepare.outputs.tag }}`' >> $GITHUB_STEP_SUMMARY
